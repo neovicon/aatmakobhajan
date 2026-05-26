@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased text-gray-900 bg-gray-50 dark:bg-dark-900 dark:text-gray-100;
+  }
+}
+
+@layer components {
+  /* Glassmorphism effects */
+  .glass {
+    @apply bg-white/70 dark:bg-dark-800/70 backdrop-blur-md border border-white/20 dark:border-white/10;
+  }
+  
+  .glass-card {
+    @apply bg-white dark:bg-dark-800 shadow-sm rounded-2xl border border-gray-100 dark:border-dark-700 transition-all duration-300;
+  }
+  
+  .glass-card:hover {
+    @apply shadow-md transform -translate-y-1;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-dark-600 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-600;
+  }
+
+  /* Dynamic font classes applied dynamically by JS */
+  .font-devanagari { font-family: 'Noto Sans Devanagari', sans-serif; }
+  .font-mukta { font-family: 'Mukta', sans-serif; }
+  .font-poppins { font-family: 'Poppins', sans-serif; }
+  .font-roboto { font-family: 'Roboto', sans-serif; }
+}
+
+/* Animations added via tailwind config but can add generic here if needed */

@@ -1,0 +1,4 @@
+#  add all the secrets and node_modulus on gitignore
+
+node_modules/*
+.env
