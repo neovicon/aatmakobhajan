@@ -38,6 +38,7 @@ const Navbar = () => {
     { name: 'Home', path: '/' },
     { name: 'Trending', path: '/search?sort=trending' },
     { name: 'About', path: '/about' },
+    { name: 'Download App', path: '/download' },
   ];
 
   return (

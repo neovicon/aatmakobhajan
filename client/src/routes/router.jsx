@@ -23,6 +23,7 @@ const Search = lazy(() => import('../pages/Search'));
 const SongDetail = lazy(() => import('../pages/SongDetail'));
 const About = lazy(() => import('../pages/About'));
 const NotFound = lazy(() => import('../pages/NotFound'));
+const DownloadApp = lazy(() => import('../pages/DownloadApp'));
 
 // Auth
 const Login = lazy(() => import('../pages/auth/Login'));
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
       {
         path: 'about',
         element: <Suspense fallback={<LoadingFallback />}><About /></Suspense>,
+      },
+      {
+        path: 'download',
+        element: <Suspense fallback={<LoadingFallback />}><DownloadApp /></Suspense>,
       },
       {
         path: 'login',
