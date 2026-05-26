@@ -53,39 +53,26 @@ const SongCard = ({ song, onDelete }) => {
         transition={{ duration: 0.2 }}
       >
         <Link to={`/song/${song.slug}`} className="block h-full">
-          <Card className="h-full flex flex-row p-0 overflow-hidden group">
-            <div className="relative w-20 h-20 md:w-32 md:h-32 flex-shrink-0 overflow-hidden bg-gray-200 dark:bg-dark-700">
-              <img 
-                src={song.coverImage !== 'default-cover.jpg' ? song.coverImage : 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=600'} 
-                alt={song.title} 
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <div className="bg-primary-500 rounded-full p-3 text-white transform scale-50 group-hover:scale-100 transition-transform duration-300">
-                  <Play className="w-6 h-6 ml-1" />
-                </div>
+          <Card className="h-full flex flex-col p-0 overflow-hidden group relative">
+            {/* Admin Quick Controls */}
+            {isAdmin && (
+              <div className="absolute top-2 right-2 flex gap-1.5 z-10 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                <button
+                  onClick={handleEditClick}
+                  className="p-1.5 bg-white/95 dark:bg-dark-800/95 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-white dark:hover:bg-dark-700 rounded-lg shadow-md transition-all hover:scale-105"
+                  title="Edit Song"
+                >
+                  <Edit size={14} />
+                </button>
+                <button
+                  onClick={handleDeleteClick}
+                  className="p-1.5 bg-white/95 dark:bg-dark-800/95 text-gray-700 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 hover:bg-white dark:hover:bg-dark-700 rounded-lg shadow-md transition-all hover:scale-105"
+                  title="Delete Song"
+                >
+                  <Trash2 size={14} />
+                </button>
               </div>
-
-              {/* Admin Quick Controls */}
-              {isAdmin && (
-                <div className="absolute top-2 right-2 flex gap-1.5 z-10 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
-                  <button
-                    onClick={handleEditClick}
-                    className="p-1.5 bg-white/95 dark:bg-dark-800/95 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-white dark:hover:bg-dark-700 rounded-lg shadow-md transition-all hover:scale-105"
-                    title="Edit Song"
-                  >
-                    <Edit size={14} />
-                  </button>
-                  <button
-                    onClick={handleDeleteClick}
-                    className="p-1.5 bg-white/95 dark:bg-dark-800/95 text-gray-700 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 hover:bg-white dark:hover:bg-dark-700 rounded-lg shadow-md transition-all hover:scale-105"
-                    title="Delete Song"
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                </div>
-              )}
-            </div>
+            )}
             
             <div className="p-4 flex-1 flex flex-col">
               <div className="flex justify-between items-start mb-2">

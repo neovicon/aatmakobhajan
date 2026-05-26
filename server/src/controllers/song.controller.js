@@ -65,8 +65,24 @@ export const searchSongs = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, { songs: [], total: 0 }, 'Empty query'));
   }
 
-  // Base query with text search
-  const query = { $text: { $search: q } };
+  const regexQuery = new RegExp(q, 'i');
+  // Base query with regex search for partial matching
+  const query = {
+    $or: [
+      { title: regexQuery },
+      { artist: regexQuery },
+      { writer: regexQuery },
+      { nepaliLyrics: regexQuery },
+      { romanizedLyrics: regexQuery },
+      { tags: regexQuery }
+    ]
+  };
+
+  // Add category filtering if provided
+  if (req.query.category) {
+    query.category = req.query.category;
+  }
+
   // Add tags filtering if provided
   if (req.query.tags) {
     const tags = Array.isArray(req.query.tags)
@@ -75,8 +91,8 @@ export const searchSongs = asyncHandler(async (req, res) => {
     query.tags = { $in: tags };
   }
 
-  const songs = await Song.find(query, { score: { $meta: 'textScore' } })
-    .sort({ score: { $meta: 'textScore' } })
+  const songs = await Song.find(query)
+    .sort({ viewCount: -1 })
     .skip(skip)
     .limit(limit)
     .select('-history');

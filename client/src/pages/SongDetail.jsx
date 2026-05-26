@@ -14,7 +14,7 @@ import { shareContent } from '../utils/share';
 import AudioPlayer from '../components/song/AudioPlayer';
 import VideoPlayer from '../components/song/VideoPlayer';
 import LyricsView from '../components/song/LyricsView';
-import FontSwitcher from '../components/song/FontSwitcher';
+import FontSizeSwitcher from '../components/song/FontSizeSwitcher';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import Skeleton from '../components/ui/Skeleton';
@@ -143,21 +143,13 @@ const SongDetail = () => {
 
       {/* Media Header Section */}
       <div className="bg-white dark:bg-dark-800 rounded-3xl overflow-hidden shadow-sm border border-gray-100 dark:border-dark-700 mb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="grid grid-cols-1">
           {/* Media Player */}
-          <div className="bg-black relative">
-            {song.videoUrl ? (
+          {song.videoUrl && (
+            <div className="bg-black relative">
               <VideoPlayer url={song.videoUrl} />
-            ) : (
-              <div className="aspect-video w-full">
-                <img 
-                  src={song.coverImage !== 'default-cover.jpg' ? song.coverImage : 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=1200'} 
-                  alt={song.title} 
-                  className="w-full h-full object-cover opacity-80"
-                />
-              </div>
-            )}
-          </div>
+            </div>
+          )}
           
           {/* Info */}
           <div className="p-6 md:p-8 flex flex-col justify-center">
@@ -189,7 +181,7 @@ const SongDetail = () => {
               </Button>
             </div>
 
-            {song.audioUrl && (
+            {navigator.onLine && song.audioUrl && (
               <div className="mt-auto pt-6 border-t border-gray-100 dark:border-dark-700">
                 <h4 className="text-sm font-medium text-gray-500 mb-3 uppercase tracking-wider">Listen Audio</h4>
                 <AudioPlayer url={song.audioUrl} title={song.title} />
@@ -220,7 +212,7 @@ const SongDetail = () => {
           </div>
           
           <div className="flex items-center gap-4 w-full sm:w-auto">
-            {!showRomanized && <FontSwitcher />}
+            {!showRomanized && <FontSizeSwitcher />}
             <button 
               onClick={handleCopy}
               className="p-2 text-gray-500 hover:text-primary-500 bg-gray-100 dark:bg-dark-700 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors ml-auto sm:ml-0"

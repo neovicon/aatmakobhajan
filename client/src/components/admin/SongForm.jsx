@@ -6,10 +6,12 @@ import Input from '../ui/Input';
 import Button from '../ui/Button';
 import { uploadApi } from '../../api/upload.api';
 import { songsApi } from '../../api/songs.api';
+import { transliterate } from '../../utils/transliterator';
 
 const SongForm = ({ initialData, isEdit = false }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [isTypingNepali, setIsTypingNepali] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     artist: '',
@@ -19,7 +21,6 @@ const SongForm = ({ initialData, isEdit = false }) => {
     nepaliLyrics: '',
     romanizedLyrics: '',
     description: '',
-    coverImage: '',
     audioUrl: '',
     videoUrl: ''
   });
@@ -33,8 +34,23 @@ const SongForm = ({ initialData, isEdit = false }) => {
     }
   }, [initialData]);
 
+  useEffect(() => {
+    if (!isTypingNepali) return;
+    
+    const delayDebounceFn = setTimeout(() => {
+      if (formData.nepaliLyrics) {
+        const romanized = transliterate(formData.nepaliLyrics);
+        setFormData(prev => ({ ...prev, romanizedLyrics: romanized }));
+      }
+      setIsTypingNepali(false);
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [formData.nepaliLyrics, isTypingNepali]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'nepaliLyrics') setIsTypingNepali(true);
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -45,12 +61,11 @@ const SongForm = ({ initialData, isEdit = false }) => {
     const toastId = toast.loading(`Uploading ${type}...`);
     try {
       let result;
-      if (type === 'image') result = await uploadApi.uploadImage(file);
-      else if (type === 'audio') result = await uploadApi.uploadAudio(file);
+      if (type === 'audio') result = await uploadApi.uploadAudio(file);
       
       setFormData(prev => ({ 
         ...prev, 
-        [type === 'image' ? 'coverImage' : 'audioUrl']: result.url 
+        audioUrl: result.url 
       }));
       toast.success(`${type} uploaded successfully`, { id: toastId });
     } catch (error) {
@@ -110,20 +125,6 @@ const SongForm = ({ initialData, isEdit = false }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cover Image URL or Upload</label>
-          <div className="flex gap-2">
-            <Input name="coverImage" value={formData.coverImage} onChange={handleChange} className="flex-1" placeholder="https://..." />
-            <div className="relative overflow-hidden shrink-0">
-              <Button type="button" variant="outline" className="w-10 px-0 relative">
-                <Upload size={16} />
-                <input type="file" accept="image/jpeg, image/png, image/webp" onChange={(e) => handleFileUpload(e, 'image')} className="absolute inset-0 opacity-0 cursor-pointer" />
-              </Button>
-            </div>
-          </div>
-          {formData.coverImage && <img src={formData.coverImage} alt="Cover preview" className="mt-2 h-20 w-20 object-cover rounded-lg" />}
-        </div>
-        
-        <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Audio URL or Upload</label>
           <div className="flex gap-2">
             <Input name="audioUrl" value={formData.audioUrl} onChange={handleChange} className="flex-1" placeholder="https://..." />
@@ -163,7 +164,7 @@ const SongForm = ({ initialData, isEdit = false }) => {
             placeholder="ma ramro chu..."
           />
           <p className="text-xs text-gray-500 mt-1">
-            Note: Automatic transliteration on typing can be implemented using a debounce, but for now, please paste or write the romanized version.
+            Note: Automatic transliteration is enabled. You can still manually edit the romanized version.
           </p>
         </div>
       </div>

@@ -92,11 +92,6 @@ const Songs = () => {
                   <tr key={song._id} className="hover:bg-gray-50 dark:hover:bg-dark-700/50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">
-                        <img 
-                          src={song.coverImage !== 'default-cover.jpg' ? song.coverImage : 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=150'} 
-                          alt="" 
-                          className="w-12 h-12 rounded-lg object-cover" 
-                        />
                         <div>
                           <p className="font-medium font-devanagari text-gray-900 dark:text-white line-clamp-1">{song.title}</p>
                           <p className="text-sm text-gray-500 dark:text-gray-400">{song.artist}</p>

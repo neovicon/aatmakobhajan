@@ -2,17 +2,17 @@ import { create } from 'zustand';
 
 // Available fonts: 'inter', 'devanagari', 'mukta', 'poppins', 'roboto'
 export const useFontStore = create((set) => ({
-  font: 'inter', // Default font
+  fontSize: 'text-lg', // Default size
   
   initFont: () => {
-    const stored = localStorage.getItem('lyrics-font');
+    const stored = localStorage.getItem('lyrics-font-size');
     if (stored) {
-      set({ font: stored });
+      set({ fontSize: stored });
     }
   },
   
-  setFont: (font) => {
-    localStorage.setItem('lyrics-font', font);
-    set({ font });
+  setFontSize: (fontSize) => {
+    localStorage.setItem('lyrics-font-size', fontSize);
+    set({ fontSize });
   }
 }));
