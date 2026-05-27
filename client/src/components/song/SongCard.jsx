@@ -53,20 +53,44 @@ const SongCard = ({ song, onDelete }) => {
         transition={{ duration: 0.2 }}
       >
         <Link to={`/song/${song.slug}`} className="block h-full">
-          <Card className="h-full flex flex-col p-0 overflow-hidden group relative">
+          <Card className="h-full flex items-center p-3 gap-3 overflow-hidden group relative">
+            <img
+              src="https://res.cloudinary.com/dlf3ixlw6/image/upload/v1779773579/519070531_1790024805723604_1260567920847134899_n_dp9inh.jpg"
+              alt="Artist"
+              className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+            />
+            
+            <div className="flex-1 min-w-0">
+              <h3 className="font-devanagari font-bold text-sm text-gray-900 dark:text-white line-clamp-1">
+                {song.title}
+              </h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
+                {song.artist}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400 shrink-0">
+              <span className="flex items-center gap-1">
+                <Eye className="w-3.5 h-3.5" /> {song.viewCount || 0}
+              </span>
+              <span className="flex items-center gap-1">
+                <Heart className="w-3.5 h-3.5" /> {song.favoriteCount || 0}
+              </span>
+            </div>
+
             {/* Admin Quick Controls */}
             {isAdmin && (
-              <div className="absolute top-2 right-2 flex gap-1.5 z-10 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+              <div className="flex gap-1.5 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                 <button
                   onClick={handleEditClick}
-                  className="p-1.5 bg-white/95 dark:bg-dark-800/95 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-white dark:hover:bg-dark-700 rounded-lg shadow-md transition-all hover:scale-105"
+                  className="p-1.5 text-gray-400 hover:text-primary-500 rounded-lg transition-colors"
                   title="Edit Song"
                 >
                   <Edit size={14} />
                 </button>
                 <button
                   onClick={handleDeleteClick}
-                  className="p-1.5 bg-white/95 dark:bg-dark-800/95 text-gray-700 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 hover:bg-white dark:hover:bg-dark-700 rounded-lg shadow-md transition-all hover:scale-105"
+                  className="p-1.5 text-gray-400 hover:text-red-500 rounded-lg transition-colors"
                   title="Delete Song"
                 >
                   <Trash2 size={14} />
@@ -74,32 +98,8 @@ const SongCard = ({ song, onDelete }) => {
               </div>
             )}
             
-            <div className="p-4 flex-1 flex flex-col">
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="font-devanagari font-bold text-lg text-gray-900 dark:text-white line-clamp-1">
-                  {song.title}
-                </h3>
-              </div>
-              
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                {song.artist}
-              </p>
-              
-              <div className="mt-auto flex items-center justify-between pt-3 border-t border-gray-100 dark:border-dark-700">
-                <Badge variant="secondary" className="capitalize">{song.category}</Badge>
-                
-                <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
-                  <span className="flex items-center gap-1">
-                    <Eye className="w-3.5 h-3.5" /> {song.viewCount || 0}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Heart className="w-3.5 h-3.5" /> {song.favoriteCount || 0}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </Link>
+            </Card>
+          </Link>
       </motion.div>
 
       {/* Wrapping Modal to prevent event bubbling inside portal */}
